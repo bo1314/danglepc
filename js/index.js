@@ -1,4 +1,84 @@
 window.onload=function(){
+
+    //轮播
+    
+    function lunbo(obj,position,buchang,funs,time){
+
+        clearInterval(obj.timer)
+        
+        obj.timer = setInterval(function(){
+    
+            var step = (position - obj.offsetLeft) / buchang;
+            step =  step > 0 ? Math.ceil(step) : Math.floor(step)
+            if(obj.offsetLeft == position){
+                clearInterval(obj.timer)
+                if(funs){
+                    funs()
+                }
+            }
+            obj.style.left = obj.offsetLeft + step + 'px';
+        },time)
+    }
+	//获取轮播 的宽度
+	var bannerContent = document.querySelector('.banner-content')
+	var bannerBtn = document.querySelector('.banner-btn')
+	var yulw = bannerContent.offsetWidth;
+	var bannerUl = document.querySelector('.banner-ul')
+	
+	bannerContent.addEventListener('mouseover',function(){
+		bannerBtn.style.display = 'block'
+		clearInterval(zidong)
+	})
+	bannerContent.addEventListener('mouseout',function(){
+		bannerBtn.style.display = 'none'
+		zidong = setInterval(function(){
+			btnr.click();
+		},1800)
+		
+	})
+	
+    var btnl = document.querySelector('#btn-l');
+	var btnr = document.querySelector('#btn-r');
+	var num = 0
+	
+	 var jlf = true
+	
+    btnr.addEventListener('click',function(){
+		if(jlf){
+			jlf = false
+			if(num == bannerUl.children.length-1 ){
+				num = 0;
+				bannerUl.style.left = "0px"
+			}
+			num++;
+			//console.log(num)
+			lunbo(bannerUl,-num*yulw,50,function(){
+				jlf = true
+			},15)
+		}
+
+		
+	})
+	btnl.addEventListener('click',function(){
+		if(jlf){
+			jlf = false
+			if(num == 0 ){
+				num = bannerUl.children.length-1;
+				bannerUl.style.left = -(bannerUl.children.length-1)*yulw+'px'
+			}
+			num--;
+			lunbo(bannerUl,-num*yulw,50,function(){
+				jlf=true
+			},15)
+		}
+		
+	})
+	var zidong = setInterval(function(){
+		btnr.click();
+	},1800)
+
+
+
     var todayLi = document.querySelectorAll('.today-li');
 
     for(var i = 0;i<todayLi.length;i++){
